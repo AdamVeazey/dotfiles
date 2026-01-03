@@ -11,11 +11,11 @@ directory without symlink clutter.
 1. **Define config alias for initial session:**  
     `alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'`
 
-1. **Deploy the files:**
-   `config checkout`
+1. **Deploy the files:**  
+   `config checkout`  
    *Note: If there are conflicting default files (like .bashrc), move them out of the way first.*
 
-1. **Silence the noise:**
+1. **Silence the noise:**  
    `config config --local status.showUntrackedFiles no`
 
 ## Requirements
