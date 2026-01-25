@@ -1,8 +1,4 @@
-# XDG Base Directory Setup 
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+#!/usr/bin/env zsh
 
 # Configure Zinit paths
 declare -A ZINIT
@@ -51,11 +47,6 @@ autoload -U promptinit; promptinit
 zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
 zinit light sindresorhus/pure
 
-# History Settings
-HISTFILE="${XDG_STATE_HOME}/zsh/history"
-HISTSIZE=10000
-SAVEHIST=10000
-
 setopt incappendhistory sharehistory histignorealldups histfindnodups histignorespace histnofunctions
 
 # General options
@@ -64,8 +55,8 @@ setopt extendedglob
 setopt correct # auto-correct small typos
 
 # Enable vi keybindings
-bindkey -v
-bindkey -M viins '^F' autosuggest-accept
+# bindkey -v
+# bindkey -M viins '^F' autosuggest-accept
 
 # Enable fzf
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh

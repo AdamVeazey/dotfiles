@@ -38,7 +38,7 @@ config.enable_tab_bar = false
 
 config.window_background_opacity = 0.85
 
-config.initial_rows = 30
+config.initial_rows = 40
 config.initial_cols = 80
 
 -- and finally, return the configuration to wezterm
