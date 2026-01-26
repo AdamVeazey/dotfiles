@@ -1,0 +1,7 @@
+# ~/.config/.aliases
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias ll='ls -AlFh'
+alias vim='nvim'
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+

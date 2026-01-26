@@ -75,12 +75,8 @@ bindkey -M vicmd 'j' history-substring-search-down
 
 # Enable fzf
 (( $+commands[fzf] )) && source <(fzf --zsh)
-
-alias ls='ls --color=auto'
-alias grep='grep --color=auto'
-alias ll='ls -AlFh'
-alias vim='nvim'
-alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+[[ -f "${XDG_CONFIG_HOME}/.aliases" ]] && source "${XDG_CONFIG_HOME}/.aliases"
+(( $+commands[compdef] )) && compdef config=git # tab completions work for config as if it was git
 
 # Display a random pokemon if run in interactive mode
 #if [[ -o interactive ]]; then

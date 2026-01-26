@@ -63,10 +63,13 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+# Load shared aliases
+[[ -f "${XDG_CONFIG_HOME}/.aliases" ]] && . ${XDG_CONFIG_HOME}/.aliases
+
+# Completion for the 'config' alias
+if type _git &>/dev/null; then
+	complete -o default -o nospace -F _git config
+fi
 
 . "$HOME/.cargo/env"
 
