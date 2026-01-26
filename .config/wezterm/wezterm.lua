@@ -33,13 +33,21 @@ config.font = wezterm.font("Inconsolata Nerd Font")
 config.font_size = 14
 
 config.window_decorations = "TITLE | RESIZE"
+config.window_padding = {
+	left = 0,
+	right = 0,
+	top = 0,
+	bottom = 0,
+}
 
 config.enable_tab_bar = false
 
 config.window_background_opacity = 0.85
 
-config.initial_rows = 40
-config.initial_cols = 80
+config.initial_rows = 30
+config.initial_cols = 120
+
+config.enable_scroll_bar = true
 
 -- and finally, return the configuration to wezterm
 return config
