@@ -8,6 +8,7 @@ export SAVEHIST=100000
 # Man pages
 export MANPAGER='nvim +Man!'
 
+
 # Configure Zinit paths
 declare -A ZINIT
 ZINIT[HOME_DIR]="${XDG_DATA_HOME}/zinit"
@@ -24,7 +25,7 @@ source "${ZINIT[BIN_DIR]}/zinit.zsh"
 
 # Pure Prompt
 PURE_CMD_MAX_EXEC_TIME=999999999999999999 # disable execution time display
-zinit ice compile'(pure|async).zsh' pick'async.zsh' src'pure.zsh'
+zinit ice as"theme"
 zinit light sindresorhus/pure
 
 if (( $+commands[dircolors] )); then
@@ -76,7 +77,12 @@ bindkey -M vicmd 'j' history-substring-search-down
 # Enable fzf
 (( $+commands[fzf] )) && source <(fzf --zsh)
 [[ -f "${XDG_CONFIG_HOME}/.aliases" ]] && source "${XDG_CONFIG_HOME}/.aliases"
-(( $+commands[compdef] )) && compdef config=git # tab completions work for config as if it was git
+#(( $+commands[compdef] )) && compdef config=git # tab completions work for config as if it was git
+
+if (( $+functions[prompt_pure_preprompt_render] )); then
+	# Use zsh's parameter substitution to find and replace that exact print line
+	functions[prompt_pure_preprompt_render]="${functions[prompt_pure_preprompt_render]/print/:}"
+fi
 
 # Display a random pokemon if run in interactive mode
 #if [[ -o interactive ]]; then
