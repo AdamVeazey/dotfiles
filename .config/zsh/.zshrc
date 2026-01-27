@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 # zsh
+mkdir -p "$XDG_STATE_HOME/zsh"
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
 export HISTSIZE=100000
 export SAVEHIST=100000
@@ -73,6 +74,10 @@ bindkey -v
 bindkey -M viins '^F' autosuggest-accept
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
+bindkey -M viins '^[[A' history-substring-search-up
+bindkey -M viins '^[[B' history-substring-search-down
+bindkey -M viins '^[OA' history-substring-search-up
+bindkey -M viins '^[OB' history-substring-search-down
 
 # Enable fzf
 (( $+commands[fzf] )) && source <(fzf --zsh)

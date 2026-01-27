@@ -32,7 +32,7 @@ config.font = wezterm.font("Inconsolata Nerd Font")
 -- config.font = wezterm.font 'Terminess Nerd Font'
 config.font_size = 14
 
-config.window_decorations = "TITLE | RESIZE"
+config.window_decorations = "INTEGRATED_BUTTONS|TITLE|RESIZE"
 config.window_padding = {
 	left = 0,
 	right = 0,
