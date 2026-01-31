@@ -84,10 +84,10 @@ bindkey -M viins '^[OB' history-substring-search-down
 [[ -f "${XDG_CONFIG_HOME}/.aliases" ]] && source "${XDG_CONFIG_HOME}/.aliases"
 #(( $+commands[compdef] )) && compdef config=git # tab completions work for config as if it was git
 
-if (( $+functions[prompt_pure_preprompt_render] )); then
-	# Use zsh's parameter substitution to find and replace that exact print line
-	functions[prompt_pure_preprompt_render]="${functions[prompt_pure_preprompt_render]/print/:}"
-fi
+# if (( $+functions[prompt_pure_preprompt_render] )); then
+# 	# Use zsh's parameter substitution to find and replace that exact print line
+# 	functions[prompt_pure_preprompt_render]="${functions[prompt_pure_preprompt_render]/print/:}"
+# fi
 
 # Display a random pokemon if run in interactive mode
 #if [[ -o interactive ]]; then
