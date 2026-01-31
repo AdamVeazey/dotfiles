@@ -20,10 +20,11 @@ directory without symlink clutter.
 
 ## Requirements
 
-`sudo pacman -S zsh wezterm nvim fzf ttf-inconsolata-nerd`
+`sudo pacman -S zsh wezterm nvim fzf ttf-inconsolata-nerd wl-clipboard`
 
 - zsh
 - ttf-inconsolata-nerd 
 - wezterm
 - fzf
 - nvim
+- wl-clipboard
