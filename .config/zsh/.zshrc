@@ -65,19 +65,42 @@ zinit wait lucid for \
 setopt incappendhistory sharehistory histignorealldups histfindnodups histignorespace histnofunctions
 
 # General options
-setopt autocd
+setopt autocd autopushd pushdignoredups
 setopt extendedglob globdots
 setopt correct # auto-correct small typos
 
 # Enable vi keybindings
 bindkey -v
-bindkey -M viins '^F' autosuggest-accept
+# bindkey -M viins '^F' autosuggest-accept
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 bindkey -M viins '^[[A' history-substring-search-up
 bindkey -M viins '^[[B' history-substring-search-down
 bindkey -M viins '^[OA' history-substring-search-up
 bindkey -M viins '^[OB' history-substring-search-down
+
+# Use hjkl for completion menu navigation
+zmodload zsh/complist
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+
+# Make vi mode switching faster
+export KEYTIMEOUT=1
+
+# Block cursor for normal mode, I-beam for insert mode
+# 1. Function to handle cursor shape
+_set_cursor_shape() {
+    case ${KEYMAP} in
+        vicmd) echo -ne '\e[2 q' ;; # Block
+        *)     echo -ne '\e[6 q' ;; # Beam 
+    esac
+}
+
+autoload -Uz add-zle-hook-widget
+add-zle-hook-widget zle-keymap-select _set_cursor_shape
+add-zle-hook-widget zle-line-init _set_cursor_shape
 
 # Enable fzf
 (( $+commands[fzf] )) && source <(fzf --zsh)
