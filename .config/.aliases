@@ -4,6 +4,8 @@ alias grep='grep --color=auto'
 alias ll='ls -AlFh'
 alias vim='nvim'
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias d='dirs -v'
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
 
 if [ -f "$HOME/.config/.aliases.local" ]; then
 	source "$HOME/.config/.aliases.local"
