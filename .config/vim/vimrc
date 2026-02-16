@@ -43,6 +43,8 @@ set undofile            " Persistent undo (works across restarts)
 set hlsearch            " Highlight search matches
 set incsearch           " Show matches as you type
 set mouse=a             " Enable mouse support
+set ignorecase          " Case insensitive search
+set smartcase           " ...unless you use a capital letter
 
 " Indentation
 set tabstop=4
@@ -129,25 +131,26 @@ nnoremap Y y$
 vnoremap > >gv
 vnoremap < <gv
 
-
-" -- Copy (Yank) to system clipboard --
-" In Visual mode, Space+y yanks the selection
-vnoremap <Leader>y "+y
-" In Normal mode, Space+y yanks the current motion
-nnoremap <Leader>y "+y
-" Space+Y yanks from cursor to the end of the line
-nnoremap <Leader>Y "+y$
-
-" -- Paste from system clipboard --
-" Space+p/P puts the system register after/before the cursor
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-" In Visual mode, Space+p replaces the selection with clipboard content
-vnoremap <Leader>p "+p
-
 " -- Manage Config --
 nnoremap <Leader>ve :vsplit $MYVIMRC<CR>
-nnoremap <Leader>vs :source $MYVIMRC<CR>
+nnoremap <Leader>vs :source $MYVIMRC <bar> :nohlsearch<CR>
+
+if has('clipboard') || has('nvim')
+    " -- Copy (Yank) to system clipboard --
+    " In Visual mode, Space+y yanks the selection
+    vnoremap <Leader>y "+y
+    " In Normal mode, Space+y yanks the current motion
+    nnoremap <Leader>y "+y
+    " Space+Y yanks from cursor to the end of the line
+    nnoremap <Leader>Y "+y$
+
+    " -- Paste from system clipboard --
+    " Space+p/P puts the system register after/before the cursor
+    nnoremap <Leader>p "+p
+    nnoremap <Leader>P "+P
+    " In Visual mode, Space+p replaces the selection with clipboard content
+    vnoremap <Leader>p "+p
+endif
 
 " =============================================================================
 " AUTOCMDS
