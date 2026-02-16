@@ -7,21 +7,21 @@ if empty($XDG_DATA_HOME)   | let $XDG_DATA_HOME   = $HOME."/.local/share" | endi
 if empty($XDG_STATE_HOME)  | let $XDG_STATE_HOME  = $HOME."/.local/state" | endif
 
 if !has('nvim')
-  " Ensure Vim looks in XDG paths for configuration and plugins
-  set runtimepath^=$XDG_CONFIG_HOME/vim
-  set runtimepath+=$XDG_DATA_HOME/vim
-  set runtimepath+=$XDG_CONFIG_HOME/vim/after
+    " Ensure Vim looks in XDG paths for configuration and plugins
+    set runtimepath^=$XDG_CONFIG_HOME/vim
+    set runtimepath+=$XDG_DATA_HOME/vim
+    set runtimepath+=$XDG_CONFIG_HOME/vim/after
 
-  set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
-  set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
+    set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
+    set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
 
-  " Auto-create state directories and set paths
-  " The // ensures unique filenames for swaps/backups
-  set backupdir=$XDG_STATE_HOME/vim/backup// | call mkdir(&backupdir, 'p', 0700)
-  set directory=$XDG_STATE_HOME/vim/swap//   | call mkdir(&directory, 'p', 0700)
-  set undodir=$XDG_STATE_HOME/vim/undo//     | call mkdir(&undodir,   'p', 0700)
-  set viewdir=$XDG_STATE_HOME/vim/view       | call mkdir(&viewdir,   'p', 0700)
-  set viminfofile=$XDG_STATE_HOME/vim/viminfo
+    " Auto-create state directories and set paths
+    " The // ensures unique filenames for swaps/backups
+    set backupdir=$XDG_STATE_HOME/vim/backup// | call mkdir(&backupdir, 'p', 0700)
+    set directory=$XDG_STATE_HOME/vim/swap//   | call mkdir(&directory, 'p', 0700)
+    set undodir=$XDG_STATE_HOME/vim/undo//     | call mkdir(&undodir,   'p', 0700)
+    set viewdir=$XDG_STATE_HOME/vim/view       | call mkdir(&viewdir,   'p', 0700)
+    set viminfofile=$XDG_STATE_HOME/vim/viminfo
 endif
 
 " Shared Data (Netrw & Spelling)
@@ -57,10 +57,50 @@ set number              " Show line numbers
 set relativenumber      " Relative numbers for jumps
 set splitbelow          " Horizontal splits open below
 set splitright          " Vertical splits open to the right
-set laststatus=2        " Always show status bar
 
+" =============================================================================
+" STATUS LINE CONFIGURATION (No Plugins - Vim only)
+" =============================================================================
 if has('nvim')
     set termguicolors
+else
+    set laststatus=2        " Always show status bar
+
+    " Define the colors based on Mode
+    function! UpdateStatusLine()
+        hi StatusLine     ctermfg=5 ctermbg=0 guifg=#ffffff guibg=#121212
+        hi StatusLineNC   ctermfg=8 ctermbg=0 guifg=#444444 guibg=#121212
+
+        let l:m = mode()
+        if l:m ==# 'i'      " INSERT -> Green (Color 2)
+            hi StatusMode ctermfg=0 ctermbg=2 guifg=#000000 guibg=#A6E22E
+        elseif l:m =~# '[vV\x16]' " VISUAL -> Red (Color 1)
+            hi StatusMode ctermfg=0 ctermbg=1 guifg=#000000 guibg=#AE81FF
+        elseif l:m ==# 'R'  " REPLACE -> Red (Color 1)
+            hi StatusMode ctermfg=0 ctermbg=1 guifg=#000000 guibg=#F92672
+        else                " NORMAL -> White (Color 7)
+            hi StatusMode ctermfg=0 ctermbg=7 guifg=#000000 guibg=#66D9EF
+        endif
+        return ''
+    endfunction
+
+    " Helper for mode text
+    function! StatuslineMode()
+        let l:m = mode()
+        let l:mode_map = {
+            \ 'n': ' NORMAL ', 'i': ' INSERT ', 'R': ' REPLACE ',
+            \ 'v': ' VISUAL ', 'V': ' V-LINE ', "\<C-V>": ' V-BLOCK '
+        \ }
+        return get(l:mode_map, l:m, ' ' . l:m . ' ')
+    endfunction
+
+    " Assemble the Statusline
+    set statusline=%{UpdateStatusLine()}
+    set statusline+=%#StatusMode#%{StatuslineMode()} " Mode block
+    set statusline+=%#StatusLine#\ %f%m               " File path + mod on the bar bg
+    set statusline+=%=                                " Right-align spacer
+    set statusline+=%#StatusLine#\ %y\ %{&fileencoding}\ [%{&fileformat}]
+    set statusline+=%#StatusMode#\ %p%%\ %l:%c\      " Pos block (matching mode color)
 endif
 
 " =============================================================================
@@ -71,13 +111,10 @@ let mapleader = " "
 " -- File Operations --
 " Save file
 nnoremap <Leader>w :w<CR>
-
 " Quit (or close current window)
 nnoremap <Leader>q :q<CR>
-
 " Force quit
 nnoremap <Leader>Q :q!<CR>
-
 " Save and quit
 nnoremap <Leader>x :x<CR>
 
@@ -87,6 +124,11 @@ nnoremap <Leader>h :nohlsearch<CR>
 " Y is normally == to yy, D deletes to EOL and C changes to EOL. Make Y copy
 " the same logic
 nnoremap Y y$
+
+" -- Indentation --
+vnoremap > >gv
+vnoremap < <gv
+
 
 " -- Copy (Yank) to system clipboard --
 " In Visual mode, Space+y yanks the selection
@@ -111,9 +153,9 @@ nnoremap <Leader>vs :source $MYVIMRC<CR>
 " AUTOCMDS
 " =============================================================================
 augroup formatting
-  autocmd!
-  " Set text width to 78 for text files
-  autocmd FileType text setlocal textwidth=78
-  " Strip trailing whitespace on save
-  autocmd BufWritePre * if &ft != 'markdown' | %s/\s\+$//e | endif
+    autocmd!
+    " Set text width to 78 for text files
+    autocmd FileType text setlocal textwidth=78
+    " Strip trailing whitespace on save
+    autocmd BufWritePre * if &ft != 'markdown' | %s/\s\+$//e | endif
 augroup END
