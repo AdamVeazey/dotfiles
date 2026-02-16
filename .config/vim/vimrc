@@ -1,0 +1,119 @@
+" =============================================================================
+" XDG BASE DIRECTORY SETUP
+" =============================================================================
+if empty($XDG_CACHE_HOME)  | let $XDG_CACHE_HOME  = $HOME."/.cache"       | endif
+if empty($XDG_CONFIG_HOME) | let $XDG_CONFIG_HOME = $HOME."/.config"      | endif
+if empty($XDG_DATA_HOME)   | let $XDG_DATA_HOME   = $HOME."/.local/share" | endif
+if empty($XDG_STATE_HOME)  | let $XDG_STATE_HOME  = $HOME."/.local/state" | endif
+
+if !has('nvim')
+  " Ensure Vim looks in XDG paths for configuration and plugins
+  set runtimepath^=$XDG_CONFIG_HOME/vim
+  set runtimepath+=$XDG_DATA_HOME/vim
+  set runtimepath+=$XDG_CONFIG_HOME/vim/after
+
+  set packpath^=$XDG_DATA_HOME/vim,$XDG_CONFIG_HOME/vim
+  set packpath+=$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim/after
+
+  " Auto-create state directories and set paths
+  " The // ensures unique filenames for swaps/backups
+  set backupdir=$XDG_STATE_HOME/vim/backup// | call mkdir(&backupdir, 'p', 0700)
+  set directory=$XDG_STATE_HOME/vim/swap//   | call mkdir(&directory, 'p', 0700)
+  set undodir=$XDG_STATE_HOME/vim/undo//     | call mkdir(&undodir,   'p', 0700)
+  set viewdir=$XDG_STATE_HOME/vim/view       | call mkdir(&viewdir,   'p', 0700)
+  set viminfofile=$XDG_STATE_HOME/vim/viminfo
+endif
+
+" Shared Data (Netrw & Spelling)
+let g:netrw_home = $XDG_DATA_HOME."/vim"
+if !isdirectory($XDG_DATA_HOME."/vim/spell")
+    call mkdir($XDG_DATA_HOME."/vim/spell", 'p', 0700)
+endif
+
+" =============================================================================
+" CORE BEHAVIOR
+" =============================================================================
+if !has('nvim') | source $VIMRUNTIME/defaults.vim | endif
+
+syntax on
+filetype plugin indent on
+
+set backup              " Keep a backup file
+set undofile            " Persistent undo (works across restarts)
+set hlsearch            " Highlight search matches
+set incsearch           " Show matches as you type
+set mouse=a             " Enable mouse support
+
+" Indentation
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+
+" =============================================================================
+" VISUALS & UI
+" =============================================================================
+set number              " Show line numbers
+set relativenumber      " Relative numbers for jumps
+set splitbelow          " Horizontal splits open below
+set splitright          " Vertical splits open to the right
+set laststatus=2        " Always show status bar
+
+if has('nvim')
+    set termguicolors
+endif
+
+" =============================================================================
+" CUSTOM MAPPINGS
+" =============================================================================
+let mapleader = " "
+
+" -- File Operations --
+" Save file
+nnoremap <Leader>w :w<CR>
+
+" Quit (or close current window)
+nnoremap <Leader>q :q<CR>
+
+" Force quit
+nnoremap <Leader>Q :q!<CR>
+
+" Save and quit
+nnoremap <Leader>x :x<CR>
+
+" -- Convenience --
+" Clear search highlights
+nnoremap <Leader>h :nohlsearch<CR>
+" Y is normally == to yy, D deletes to EOL and C changes to EOL. Make Y copy
+" the same logic
+nnoremap Y y$
+
+" -- Copy (Yank) to system clipboard --
+" In Visual mode, Space+y yanks the selection
+vnoremap <Leader>y "+y
+" In Normal mode, Space+y yanks the current motion
+nnoremap <Leader>y "+y
+" Space+Y yanks from cursor to the end of the line
+nnoremap <Leader>Y "+y$
+
+" -- Paste from system clipboard --
+" Space+p/P puts the system register after/before the cursor
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+" In Visual mode, Space+p replaces the selection with clipboard content
+vnoremap <Leader>p "+p
+
+" -- Manage Config --
+nnoremap <Leader>ve :vsplit $MYVIMRC<CR>
+nnoremap <Leader>vs :source $MYVIMRC<CR>
+
+" =============================================================================
+" AUTOCMDS
+" =============================================================================
+augroup formatting
+  autocmd!
+  " Set text width to 78 for text files
+  autocmd FileType text setlocal textwidth=78
+  " Strip trailing whitespace on save
+  autocmd BufWritePre * if &ft != 'markdown' | %s/\s\+$//e | endif
+augroup END
