@@ -42,12 +42,35 @@ config.window_padding = {
 
 config.enable_tab_bar = false
 
-config.window_background_opacity = 0.85
+config.window_background_opacity = 1.0
 
 config.initial_rows = 30
 config.initial_cols = 120
 
 config.enable_scroll_bar = true
+config.scrollback_lines = 100000
+
+config.background = {
+  -- Layer 1: The random stretched cleanly across the window frame
+  {
+    source = { File = wezterm.config_dir .. '/Frieren.png' },
+    width = 'Cover',
+    height = 'Cover',
+    vertical_align = 'Top',
+    horizontal_align = 'Center',
+    repeat_y = 'Repeat',
+    repeat_x = 'NoRepeat',
+    attachment = { Parallax = 0.1 },
+  },
+
+  -- Layer 2: Your black protective tint overlay for text legibility
+  {
+    source = { Color = scheme.background },
+    width = '100%',
+    height = '100%',
+    opacity = 0.75,
+  }
+}
 
 -- and finally, return the configuration to wezterm
 return config
