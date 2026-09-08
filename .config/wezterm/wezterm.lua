@@ -32,7 +32,8 @@ config.font = wezterm.font("Inconsolata Nerd Font")
 -- config.font = wezterm.font 'Terminess Nerd Font'
 config.font_size = 14
 
-config.window_decorations = "INTEGRATED_BUTTONS|TITLE|RESIZE"
+-- config.window_decorations = "INTEGRATED_BUTTONS|TITLE|RESIZE"
+config.enable_wayland = false -- wezterm relies on xdg-decoration, gnome refused to play nice. fine back to xorg
 config.window_padding = {
 	left = 0,
 	right = 0,
