@@ -1,1 +1,1 @@
-/home/adam/.config/zsh/.zshenv
+.config/zsh/.zshenv
