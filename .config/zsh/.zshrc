@@ -26,7 +26,7 @@ source "${ZINIT[BIN_DIR]}/zinit.zsh"
 
 # Pure Prompt
 PURE_CMD_MAX_EXEC_TIME=999999999999999999 # disable execution time display
-zinit ice as"theme"
+zinit ice pick"async.zsh" src"pure.zsh"
 zinit light sindresorhus/pure
 
 if (( $+commands[dircolors] )); then
@@ -94,7 +94,7 @@ export KEYTIMEOUT=1
 _set_cursor_shape() {
     case ${KEYMAP} in
         vicmd) echo -ne '\e[2 q' ;; # Block
-        *)     echo -ne '\e[6 q' ;; # Beam 
+        *)     echo -ne '\e[6 q' ;; # Beam
     esac
 }
 
