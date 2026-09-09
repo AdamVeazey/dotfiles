@@ -1,0 +1,6 @@
+{
+    "chat.disableAIFeatures": true,
+    "workbench.iconTheme": "vscode-icons",
+    "terminal.integrated.initialHint": false,
+    "workbench.colorTheme": "Dark Modern"
+}
